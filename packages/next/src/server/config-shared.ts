@@ -23,7 +23,7 @@ export type NextConfigComplete = Required<NextConfig> & {
   // override NextConfigComplete.experimental.htmlLimitedBots to string
   // because it's not defined in NextConfigComplete.experimental
   htmlLimitedBots: string | undefined
-  experimental: ExperimentalConfig
+  experimental: Omit<ExperimentalConfig, 'turbo'>
 }
 
 export type I18NDomains = readonly DomainLocale[]
@@ -94,7 +94,10 @@ type JSONValue =
   | JSONValue[]
   | { [k: string]: JSONValue }
 
-export type TurboLoaderItem =
+/**
+ * @deprecated Use `TurbopackRuleConfigItem` instead.
+ */
+export type TurbopackLoaderItem =
   | string
   | {
       loader: string
@@ -102,21 +105,21 @@ export type TurboLoaderItem =
       options: Record<string, JSONValue>
     }
 
-export type TurboRuleConfigItemOrShortcut =
-  | TurboLoaderItem[]
-  | TurboRuleConfigItem
+export type TurbopackRuleConfigItemOrShortcut =
+  | TurbopackLoaderItem[]
+  | TurbopackRuleConfigItem
 
-export type TurboRuleConfigItemOptions = {
-  loaders: TurboLoaderItem[]
+export type TurbopackRuleConfigItemOptions = {
+  loaders: TurbopackLoaderItem[]
   as?: string
 }
 
-export type TurboRuleConfigItem =
-  | TurboRuleConfigItemOptions
-  | { [condition: string]: TurboRuleConfigItem }
+export type TurbopackRuleConfigItem =
+  | TurbopackRuleConfigItemOptions
+  | { [condition: string]: TurbopackRuleConfigItem }
   | false
 
-export interface ExperimentalTurboOptions {
+export interface TurbopackOptions {
   /**
    * (`next --turbopack` only) A mapping of aliased imports to modules to load in their place.
    *
@@ -139,14 +142,7 @@ export interface ExperimentalTurboOptions {
    *
    * @see [Turbopack Loaders](https://nextjs.org/docs/app/api-reference/next-config-js/turbo#webpack-loaders)
    */
-  loaders?: Record<string, TurboLoaderItem[]>
-
-  /**
-   * (`next --turbopack` only) A list of webpack loaders to apply when running with Turbopack.
-   *
-   * @see [Turbopack Loaders](https://nextjs.org/docs/app/api-reference/next-config-js/turbo#webpack-loaders)
-   */
-  rules?: Record<string, TurboRuleConfigItemOrShortcut>
+  rules?: Record<string, TurbopackRuleConfigItemOrShortcut>
 
   /**
    * A target memory limit for turbo, in bytes.
@@ -185,6 +181,16 @@ export interface ExperimentalTurboOptions {
    * Enable source maps. Defaults to true.
    */
   sourceMaps?: boolean
+}
+
+export interface DeprecatedExperimentalTurboOptions extends TurbopackOptions {
+  /**
+   * (`next --turbopack` only) A list of webpack loaders to apply when running with Turbopack.
+   *
+   * @deprecated Use `rules` instead.
+   * @see [Turbopack Loaders](https://nextjs.org/docs/app/api-reference/next-config-js/turbo#webpack-loaders)
+   */
+  loaders?: Record<string, TurbopackLoaderItem[]>
 }
 
 export interface WebpackConfigContext {
@@ -377,7 +383,10 @@ export interface ExperimentalConfig {
    */
   optimizeServerReact?: boolean
 
-  turbo?: ExperimentalTurboOptions
+  /**
+   * @deprecated Use `config.turbopack` instead.
+   */
+  turbo?: TurbopackOptions
 
   /**
    * For use with `@next/mdx`. Compile MDX files using the new Rust compiler.
@@ -1016,6 +1025,11 @@ export interface NextConfig extends Record<string, any> {
    * @see [transpilePackages](https://nextjs.org/docs/advanced-features/compiler#module-transpilation)
    */
   transpilePackages?: string[]
+
+  /**
+   * Options for Turbopack. Temporarily also available as `experimental.turbo` for compatibility.
+   */
+  turbopack?: TurbopackOptions
 
   skipMiddlewareUrlNormalize?: boolean
 
