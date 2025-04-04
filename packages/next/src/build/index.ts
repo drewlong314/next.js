@@ -3739,7 +3739,7 @@ function warnAboutTurbopackBuilds(config?: NextConfigComplete) {
   warningStr +=
     '\n\n- It is expected that your bundle size might be different from `next build` with webpack. This will be improved as we work towards stability.'
 
-  if (!config?.experimental.turbo?.unstablePersistentCaching) {
+  if (!config?.experimental.turbopackPersistentCaching) {
     warningStr +=
       '\n- This build is without disk caching; subsequent builds will become faster when disk caching becomes available.'
   }
