@@ -150,11 +150,6 @@ export interface TurbopackOptions {
   memoryLimit?: number
 
   /**
-   * Enable persistent caching for the turbopack dev server and build.
-   */
-  unstablePersistentCaching?: boolean
-
-  /**
    * Enable tree shaking for the turbopack dev server and build.
    */
   treeShaking?: boolean
@@ -386,7 +381,12 @@ export interface ExperimentalConfig {
   /**
    * @deprecated Use `config.turbopack` instead.
    */
-  turbo?: TurbopackOptions
+  turbo?: DeprecatedExperimentalTurboOptions
+
+  /**
+   * Enable persistent caching for the turbopack dev server and build.
+   */
+  turbopackPersistentCaching?: boolean
 
   /**
    * For use with `@next/mdx`. Compile MDX files using the new Rust compiler.
