@@ -10,10 +10,10 @@ import { patchIncorrectLockfile } from '../../lib/patch-incorrect-lockfile'
 import { downloadNativeNextSwc, downloadWasmSwc } from '../../lib/download-swc'
 import type {
   NextConfigComplete,
-  TurboLoaderItem,
-  TurboRuleConfigItem,
-  TurboRuleConfigItemOptions,
-  TurboRuleConfigItemOrShortcut,
+  TurbopackLoaderItem,
+  TurbopackRuleConfigItem,
+  TurbopackRuleConfigItemOptions,
+  TurbopackRuleConfigItemOrShortcut,
 } from '../../server/config-shared'
 import { isDeepStrictEqual } from 'util'
 import {
@@ -878,7 +878,7 @@ function bindingToApi(
   }
 
   function ensureLoadersHaveSerializableOptions(
-    turbopackRules: Record<string, TurboRuleConfigItemOrShortcut>
+    turbopackRules: Record<string, TurbopackRuleConfigItemOrShortcut>
   ) {
     for (const [glob, rule] of Object.entries(turbopackRules)) {
       if (Array.isArray(rule)) {
@@ -888,10 +888,10 @@ function bindingToApi(
       }
     }
 
-    function checkConfigItem(rule: TurboRuleConfigItem, glob: string) {
+    function checkConfigItem(rule: TurbopackRuleConfigItem, glob: string) {
       if (!rule) return
       if ('loaders' in rule) {
-        checkLoaderItems((rule as TurboRuleConfigItemOptions).loaders, glob)
+        checkLoaderItems((rule as TurbopackRuleConfigItemOptions).loaders, glob)
       } else {
         for (const key in rule) {
           const inner = rule[key]
@@ -902,7 +902,10 @@ function bindingToApi(
       }
     }
 
-    function checkLoaderItems(loaderItems: TurboLoaderItem[], glob: string) {
+    function checkLoaderItems(
+      loaderItems: TurbopackLoaderItem[],
+      glob: string
+    ) {
       for (const loaderItem of loaderItems) {
         if (
           typeof loaderItem !== 'string' &&

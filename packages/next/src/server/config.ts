@@ -9,7 +9,7 @@ import type {
   ExperimentalConfig,
   NextConfigComplete,
   NextConfig,
-  TurboLoaderItem,
+  TurbopackLoaderItem,
 } from './config-shared'
 
 import { loadWebpackHook } from './config-utils'
@@ -1273,14 +1273,26 @@ export default async function loadConfig(
           'See more info here https://nextjs.org/docs/app/api-reference/next-config-js/turbo'
       )
 
-      const rules: Record<string, TurboLoaderItem[]> = {}
+      const rules: Record<string, TurbopackLoaderItem[]> = {}
       for (const [ext, loaders] of Object.entries(
         userConfig.experimental.turbo.loaders
       )) {
-        rules['*' + ext] = loaders as TurboLoaderItem[]
+        rules['*' + ext] = loaders as TurbopackLoaderItem[]
       }
 
       userConfig.experimental.turbo.rules = rules
+    }
+
+    if (userConfig.experimental?.turbo) {
+      Log.warnOnce(
+        'The next config property `experimental.turbo` is deprecated as Turbopack has been stabilized. Please move this configuration to `config.turbopack`.'
+      )
+
+      // Merge the two configs, preferring values in `config.turbopack`.
+      userConfig.turbopack = {
+        ...userConfig.experimental.turbo,
+        ...userConfig.turbopack,
+      }
     }
 
     if (userConfig.experimental?.useLightningcss) {
