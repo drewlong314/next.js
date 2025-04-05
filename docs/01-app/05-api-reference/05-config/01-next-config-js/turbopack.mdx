@@ -1,21 +1,18 @@
 ---
-title: turbo
+title: turbopack
 description: Configure Next.js with Turbopack-specific options
-version: experimental
 ---
 
 {/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
 
-The `turbo` option lets you customize [Turbopack](/docs/app/api-reference/turbopack) to transform different files and change how modules are resolved.
+The `turbopack` option lets you customize [Turbopack](/docs/app/api-reference/turbopack) to transform different files and change how modules are resolved.
 
 ```ts filename="next.config.ts" switcher
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: {
-      // ...
-    },
+  turbopack: {
+    // ...
   },
 }
 
@@ -25,10 +22,8 @@ export default nextConfig
 ```js filename="next.config.js" switcher
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      // ...
-    },
+  turbopack: {
+    // ...
   },
 }
 
@@ -82,13 +77,11 @@ Here is an example below using the [`@svgr/webpack`](https://www.npmjs.com/packa
 
 ```js filename="next.config.js"
 module.exports = {
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
@@ -105,12 +98,10 @@ To configure resolve aliases, map imported patterns to their new destination in 
 
 ```js filename="next.config.js"
 module.exports = {
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        underscore: 'lodash',
-        mocha: { browser: 'mocha/browser-entry.js' },
-      },
+  turbopack: {
+    resolveAlias: {
+      underscore: 'lodash',
+      mocha: { browser: 'mocha/browser-entry.js' },
     },
   },
 }
@@ -128,18 +119,8 @@ To configure resolve extensions, use the `resolveExtensions` field in `next.conf
 
 ```js filename="next.config.js"
 module.exports = {
-  experimental: {
-    turbo: {
-      resolveExtensions: [
-        '.mdx',
-        '.tsx',
-        '.ts',
-        '.jsx',
-        '.js',
-        '.mjs',
-        '.json',
-      ],
-    },
+  turbopack: {
+    resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
   },
 }
 ```
@@ -161,16 +142,15 @@ To configure the module IDs strategy, use the `moduleIdStrategy` field in `next.
 
 ```js filename="next.config.js"
 module.exports = {
-  experimental: {
-    turbo: {
-      moduleIdStrategy: 'deterministic',
-    },
+  turbopack: {
+    moduleIdStrategy: 'deterministic',
   },
 }
 ```
 
 ## Version History
 
-| Version  | Changes                          |
-| -------- | -------------------------------- |
-| `13.0.0` | `experimental.turbo` introduced. |
+| Version  | Changes                                         |
+| -------- | ----------------------------------------------- |
+| `15.3.0` | `experimental.turbo` is changed to `turbopack`. |
+| `13.0.0` | `experimental.turbo` introduced.                |
