@@ -655,14 +655,11 @@ function assignDefaults(
     }
   }
 
-  if (
-    result?.experimental?.turbo?.root &&
-    !isAbsolute(result.experimental.turbo.root)
-  ) {
-    result.experimental.turbo.root = resolve(result.experimental.turbo.root)
+  if (result?.turbopack?.root && !isAbsolute(result.turbopack.root)) {
+    result.turbopack.root = resolve(result.turbopack.root)
     if (!silent) {
       Log.warn(
-        `experimental.turbo.root should be absolute, using: ${result.experimental.turbo.root}`
+        `turbopack.root should be absolute, using: ${result.turbopack.root}`
       )
     }
   }
