@@ -786,24 +786,24 @@ function bindingToApi(
     if (reactCompilerOptions) {
       const ruleKeys = ['*.ts', '*.js', '*.jsx', '*.tsx']
       if (
-        Object.keys(nextConfig?.experimental?.turbo?.rules ?? []).some((key) =>
+        Object.keys(nextConfig?.turbopack?.rules ?? []).some((key) =>
           ruleKeys.includes(key)
         )
       ) {
         Log.warn(
-          `The React Compiler cannot be enabled automatically because 'experimental.turbo' contains a rule for '*.ts', '*.js', '*.jsx', and '*.tsx'. Remove this rule, or add 'babel-loader' and 'babel-plugin-react-compiler' to the Turbopack configuration manually.`
+          `The React Compiler cannot be enabled automatically because 'turbopack.rules' contains a rule for '*.ts', '*.js', '*.jsx', and '*.tsx'. Remove this rule, or add 'babel-loader' and 'babel-plugin-react-compiler' to the Turbopack configuration manually.`
         )
       } else {
-        if (!nextConfig.experimental.turbo) {
-          nextConfig.experimental.turbo = {}
+        if (!nextConfig.turbopack) {
+          nextConfig.turbopack = {}
         }
 
-        if (!nextConfig.experimental.turbo.rules) {
-          nextConfig.experimental.turbo.rules = {}
+        if (!nextConfig.turbopack.rules) {
+          nextConfig.turbopack.rules = {}
         }
 
         for (const key of ['*.ts', '*.js', '*.jsx', '*.tsx']) {
-          nextConfig.experimental.turbo.rules[key] = {
+          nextConfig.turbopack.rules[key] = {
             browser: {
               foreign: false,
               loaders: [
@@ -840,7 +840,7 @@ function bindingToApi(
 
     if (nextConfigSerializable.experimental?.turbo?.rules) {
       ensureLoadersHaveSerializableOptions(
-        nextConfigSerializable.experimental.turbo?.rules
+        nextConfigSerializable.turbopack?.rules
       )
     }
 
