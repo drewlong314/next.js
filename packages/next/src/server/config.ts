@@ -1281,7 +1281,7 @@ export default async function loadConfig(
     }
 
     if (userConfig.experimental?.turbo) {
-      Log.warnOnce(
+      curLog.warn(
         'The next config property `experimental.turbo` is deprecated as Turbopack has been stabilized. Please move this configuration to `config.turbopack`.'
       )
 
