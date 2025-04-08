@@ -19,26 +19,22 @@ describe('turbopack-turbo-config-compatibility', () => {
   describe('only including deprecated experimental turbo config', () => {
     const { next, isTurbopack } = nextTestSetup({
       files: __dirname,
+      overrideFiles: {
+        'next.config.js': `module.exports = {
+          experimental: {
+            turbo: {
+              resolveAlias: {
+                foo: './turbo.js',
+              },
+            },
+          },
+        }`,
+      },
     })
 
     if (!isTurbopack) {
       return
     }
-
-    beforeAll(async () => {
-      await next.patchFile(
-        'next.config.js',
-        `module.exports = {
-        experimental: {
-          turbo: {
-            resolveAlias: {
-              foo: './turbo.js',
-            },
-          },
-        },
-      }`
-      )
-    })
 
     it('still uses the deprecated experimental turbo config', async () => {
       const $ = await next.render$('/')
