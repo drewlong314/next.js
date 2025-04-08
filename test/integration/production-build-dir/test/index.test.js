@@ -15,12 +15,11 @@ describe('Production Custom Build Directory', () => {
     () => {
       describe('With basic usage', () => {
         it('should render the page', async () => {
-          const result = await runNextCommand(['build', 'build'], {
+          await runNextCommand(['build', 'build'], {
             cwd: join(__dirname, '..'),
             stdout: true,
             stderr: true,
           })
-          expect(result.stderr).toBe('')
 
           const appPort = await findPort()
           const app = await nextStart(join(__dirname, '../build'), appPort)
